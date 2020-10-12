@@ -5,20 +5,29 @@ const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 
+const NotesRouter = require("./notes/notes-router");
+const FoldersRouter = require("./folders/folders-router");
+
 const app = express();
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
-
-app.use(morgan(morganOption));
-app.use(helmet());
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
 
+app.use(morgan(morganOption));
+app.use(helmet());
+app.use(cors());
+
+// Routers
+app.use("/notes", NotesRouter);
+app.use("/folders", FoldersRouter);
+
+// Error Handler
 app.use(function errorHandler(error, req, res, next) {
   let response;
-  if (NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production") {
     response = { error: { message: "server error" } };
   } else {
     console.error(error);
@@ -26,7 +35,5 @@ app.use(function errorHandler(error, req, res, next) {
   }
   res.status(500).json(response);
 });
-
-app.use(cors());
 
 module.exports = app;
