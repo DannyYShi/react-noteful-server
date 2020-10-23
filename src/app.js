@@ -3,7 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
-const { NODE_ENV, CLIENT_ORIGIN } = require("./config");
+const { NODE_ENV } = require("./config");
 
 const NotesRouter = require("./notes/notes-router");
 const FoldersRouter = require("./folders/folders-router");
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(cors({ origin: CLIENT_ORIGIN }));
+app.use(cors());
 
 // Routers
 app.use("/notes", NotesRouter);
