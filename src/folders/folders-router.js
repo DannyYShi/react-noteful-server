@@ -69,4 +69,4 @@ foldersRouter.route('/:folderId').all((req, res, next) => {
     }).catch(next)
 })
 
-module.exports = foldersRouter
+module.exports = FoldersRouter
