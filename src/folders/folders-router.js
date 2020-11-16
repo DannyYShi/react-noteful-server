@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const xss = require('xss')
 const FoldersService = require('./folders-service')
-const foldersRouter = express.Router()
+const FoldersRouter = express.Router()
 const jsonParser = express.json()
 
 const serializeUser = folder => ({
@@ -10,7 +10,7 @@ const serializeUser = folder => ({
   folder_name: xss(folder.folder_name)
 })
 
-foldersRouter.route('/').get((req, res, next) => {
+FoldersRouter.route('/').get((req, res, next) => {
   const knexInstance = req.app.get('db')
   FoldersService.getAll(knexInstance)
     .then(users => { res.json(users.map(serializeUser)) })
@@ -36,7 +36,7 @@ foldersRouter.route('/').get((req, res, next) => {
 })
 
 
-foldersRouter.route('/:folderId').all((req, res, next) => {
+FoldersRouter.route('/:folderId').all((req, res, next) => {
   FoldersService.getById(req.app.get('db'),
     req.params.folderId).then(folder => {
       if (!folder) {
